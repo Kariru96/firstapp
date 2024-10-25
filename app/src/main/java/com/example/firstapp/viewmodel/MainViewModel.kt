@@ -21,24 +21,41 @@ class MainViewModel : ViewModel() {
     }
 
     private fun fetchUsers() {
-        viewModelScope.launch {
-            val fetchedUsers = RetrofitInstance.api.getUsers()
-            _users.addAll(fetchedUsers)
+        try{
+            viewModelScope.launch {
+                val fetchedUsers = RetrofitInstance.api.getUsers()
+                _users.addAll(fetchedUsers)
+            }
+        }catch (e: Exception){
+
         }
+
     }
 
     private fun fetchMessages() {
-        viewModelScope.launch {
-            val fetchedMessages = RetrofitInstance.api.getMessages()
-            _messages.addAll(fetchedMessages)
+
+        try {
+            viewModelScope.launch {
+                val fetchedMessages = RetrofitInstance.api.getMessages()
+                _messages.addAll(fetchedMessages)
+            }
+        }catch (e: Exception){
+
         }
+
     }
 
     fun sendMessage(content: String, userId: Int) {
-        viewModelScope.launch {
-            val newMessage = Message(id = 0, userId = userId, content = content) // ID will be assigned by API
-            RetrofitInstance.api.postMessage(newMessage)
-            fetchMessages() // Refresh messages
+
+        try {
+            viewModelScope.launch {
+                val newMessage = Message(id = 0, userId = userId, content = content) // ID will be assigned by API
+                RetrofitInstance.api.postMessage(newMessage)
+                fetchMessages() // Refresh messages
+            }
+        }catch (e: Exception){
+
         }
+
     }
 }
